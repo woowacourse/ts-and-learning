@@ -48,10 +48,10 @@ export function isUser(person: Person) {
 
 export function logPerson(person: Person) {
     let additionalInformation: string = '';
-    if (isAdmin(person)) {
+    if (person.type === 'admin') {
         additionalInformation = person.role;
     }
-    if (isUser(person)) {
+    if (person.type === 'user') {
         additionalInformation = person.occupation;
     }
     console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
