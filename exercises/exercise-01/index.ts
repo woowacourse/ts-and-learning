@@ -82,7 +82,7 @@ export type User = {
   occupation: string;
 };
 
-export const users = [
+export const users: User[] = [
   {
     name: 'Max Mustermann',
     age: 25,
