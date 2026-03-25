@@ -2,7 +2,8 @@
   "name": "ts-learning-tune-up",
   "private": true,
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "exercise": "sh run.sh"
   },
   "devDependencies": {
     "typescript": "^5"
