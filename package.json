@@ -6,6 +6,6 @@
     "exercise": "sh run.sh"
   },
   "devDependencies": {
-    "typescript": "^5"
+    "typescript": "5.4.5"
   }
 }
