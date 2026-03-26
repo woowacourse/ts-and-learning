@@ -37,6 +37,9 @@ interface Admin {
 
 export type Person = User | Admin;
 
+type UserWithoutType = Omit<User, 'type'>;
+type PartialUserWithoutType = Partial<UserWithoutType>;
+
 export const persons: Person[] = [
     { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
     {
@@ -85,9 +88,9 @@ export function logPerson(person: Person) {
     console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
 }
 
-export function filterUsers(persons: Person[], criteria: User): User[] {
+export function filterUsers(persons: Person[], criteria: PartialUserWithoutType): User[] {
     return persons.filter(isUser).filter((user) => {
-        const criteriaKeys = Object.keys(criteria) as (keyof User)[];
+        const criteriaKeys = Object.keys(criteria) as (keyof PartialUserWithoutType)[];
         return criteriaKeys.every((fieldName) => {
             return user[fieldName] === criteria[fieldName];
         });

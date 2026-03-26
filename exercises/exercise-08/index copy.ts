@@ -63,14 +63,19 @@ function isPowerUser(person: Person): person is PowerUser {
 
 export function logPerson(person: Person) {
     let additionalInformation: string = '';
-    if (isAdmin(person)) {
-        additionalInformation = person.role;
-    }
-    if (isUser(person)) {
-        additionalInformation = person.occupation;
-    }
-    if (isPowerUser(person)) {
-        additionalInformation = `${person.role}, ${person.occupation}`;
+    switch(person.type) {
+        case "admin": 
+            additionalInformation = person.role;
+            break;
+        case "user": 
+            additionalInformation = person.occupation;
+            break;
+        case "powerUser":
+            additionalInformation = `${person.role}, ${person.occupation}`;
+            break;
+        default:
+            const _exhaustiveCheck: never = person;
+            return _exhaustiveCheck;
     }
     console.log(`${person.name}, ${person.age}, ${additionalInformation}`);
 }

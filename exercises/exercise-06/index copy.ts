@@ -43,11 +43,8 @@ interface Admin {
 
 export type Person = User | Admin;
 
-type UserWithoutType = Omit<User, 'type'>;
-type PartialUserWithoutType = Partial<UserWithoutType>;
-
-type AdminWithoutType = Omit<Admin, 'type'>;
-type PartialAdminWithoutType = Partial<AdminWithoutType>;
+// ts 함수 오버로딩 방식 말고 제네릭 방식으로 추가 해결함.
+type YourType<T> = Extract<Person, {type: T}>;
 
 export const persons: Person[] = [
     { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
@@ -68,11 +65,9 @@ function getObjectKeys<T extends object>(criteria: T): (keyof T)[] {
     return Object.keys(criteria) as (keyof T)[];
 }
 
-export function filterPersons(persons: Person[], personType: "user", criteria: PartialUserWithoutType): User[];
-export function filterPersons(persons: Person[], personType: "admin", criteria: PartialAdminWithoutType): Admin[];
-export function filterPersons(persons: Person[], personType: string, criteria: Partial<Person>): Person[] {
+export function filterPersons<T extends Person["type"]>(persons: Person[], personType: T, criteria: Partial<Omit<YourType<T>, 'type'>>): YourType<T>[] {
     return persons
-        .filter((person) => person.type === personType)
+        .filter((person): person is YourType<T> => person.type === personType)
         .filter((person) => {
             let criteriaKeys = getObjectKeys(criteria);
             return criteriaKeys.every((fieldName) => {

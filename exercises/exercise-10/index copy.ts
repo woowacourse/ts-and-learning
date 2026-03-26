@@ -85,6 +85,18 @@ export function promisify<T>(arg: (callback: (response: ApiResponse<T>) => void)
     })
 }
 
+export function promisifyAll<T extends object>(obj: T): {
+    [K in keyof T]: T[K] extends (callback: (response: ApiResponse<infer R>) => void) => void 
+        ? () => Promise<R> 
+        : T[K] 
+} {
+    const result: any = {};
+    for(const key in obj) {
+        result[key] = promisify(obj[key] as any);
+    }
+    return result;
+}
+
 const oldApi = {
     requestAdmins(callback: (response: ApiResponse<Admin[]>) => void) {
         callback({
@@ -112,12 +124,7 @@ const oldApi = {
     }
 };
 
-export const api = {
-    requestAdmins: promisify(oldApi.requestAdmins),
-    requestUsers: promisify(oldApi.requestUsers),
-    requestCurrentServerTime: promisify(oldApi.requestCurrentServerTime),
-    requestCoffeeMachineQueueLength: promisify(oldApi.requestCoffeeMachineQueueLength)
-};
+const api = promisifyAll(oldApi);
 
 function logPerson(person: Person) {
     console.log(
