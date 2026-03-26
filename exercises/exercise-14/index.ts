@@ -43,19 +43,34 @@ Bonus:
  * @param {Array} input
  * @return {Array | Function}
  */
-export function map(mapper, input) {
-    if (arguments.length === 0) {
-        return map;
+
+type Mapper<I, O> = (element: I, index: number, array: I[]) => O;
+
+interface MapCurried<I, O> {
+  (): MapCurried<I, O>; // 인자가 0개일 때: 자기 자신 반환
+  (input: I[]): O[]; // 인자가 1개일 때: 매핑이 완료된 배열 반환
+}
+
+export function map(): typeof map;
+export function map<I, O>(mapper: Mapper<I, O>): MapCurried<I, O>;
+export function map<I, O>(mapper: Mapper<I, O>, input: I[]): O[];
+export function map(mapper?: any, input?: any): any {
+  if (arguments.length === 0) {
+    return map;
+  }
+  if (arguments.length === 1) {
+    function subFunction(): typeof subFunction;
+    function subFunction<I, O>(subInput: I[]): O[];
+    function subFunction(subInput?: any): any {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      return subInput.map(mapper);
     }
-    if (arguments.length === 1) {
-        return function subFunction(subInput) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            return subInput.map(mapper);
-        };
-    }
-    return input.map(mapper);
+
+    return subFunction;
+  }
+  return input.map(mapper);
 }
 
 /**
@@ -74,19 +89,34 @@ export function map(mapper, input) {
  * @param {Array} input
  * @return {Array | Function}
  */
-export function filter(filterer, input) {
-    if (arguments.length === 0) {
-        return filter;
+
+type Filterer<I> = (element: I, index: number, array: I[]) => boolean;
+
+interface FilterCurried<I> {
+  (): FilterCurried<I>; // 인자가 0개일 때: 자기 자신 반환
+  (input: I[]): I[]; // 인자가 1개일 때: 매핑이 완료된 배열 반환
+}
+
+export function filter(): typeof filter;
+export function filter<I>(filterer: Filterer<I>): FilterCurried<I>;
+export function filter<I>(filterer: Filterer<I>, input: Array<I>): Array<I>;
+export function filter(filterer?: any, input?: any): any {
+  if (arguments.length === 0) {
+    return filter;
+  }
+  if (arguments.length === 1) {
+    function subFunction(): typeof subFunction;
+    function subFunction<I>(subInput: I[]): I[];
+    function subFunction(subInput?: any): any {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      return subInput.filter(filterer);
     }
-    if (arguments.length === 1) {
-        return function subFunction(subInput) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            return subInput.filter(filterer);
-        };
-    }
-    return input.filter(filterer);
+
+    return subFunction;
+  }
+  return input.filter(filterer);
 }
 
 /**
@@ -117,35 +147,47 @@ export function filter(filterer, input) {
  * @param {Array} input
  * @return {* | Function}
  */
-export function reduce(reducer, initialValue, input) {
-    if (arguments.length === 0) {
-        return reduce;
-    }
-    if (arguments.length === 1) {
-        return function subFunction(subInitialValue, subInput) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            if (arguments.length === 1) {
-                return function subSubFunction(subSubInput) {
-                    if (arguments.length === 0) {
-                        return subSubFunction;
-                    }
-                    return subSubInput.reduce(reducer, subInitialValue);
-                };
-            }
-            return subInput.reduce(reducer,subInitialValue);
-        }
-    }
-    if (arguments.length === 2) {
-        return function subFunction(subInput) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            return subInput.reduce(reducer, initialValue);
+
+type Reducer<I, O> = (accumulator: O, currentValue: I, currentIndex: number, array: I[]) => O;
+
+interface ReduceCurried<I, O> {
+  (): ReduceCurried<I, O>; // 인자가 0개일 때: 자기 자신 반환
+  (initialValue: O): O; // 인자가 1개일 때: 매핑이 완료된 배열 반환
+  (initialValue: O, input: I[]): O; // 인자가 1개일 때: 매핑이 완료된 배열 반환
+}
+
+export function reduce(): typeof reduce;
+export function reduce<I, O>(reducer: Reducer<I, O>): ReduceCurried<I, O>;
+// export function reduce<I, O>(reducer: Reducer<I, O>, initialValue: O): ReduceCurried<I, O>;
+export function reduce(reducer?: any, initialValue?: any, input?: any): any {
+  if (arguments.length === 0) {
+    return reduce;
+  }
+  if (arguments.length === 1) {
+    return function subFunction(subInitialValue, subInput) {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      if (arguments.length === 1) {
+        return function subSubFunction(subSubInput) {
+          if (arguments.length === 0) {
+            return subSubFunction;
+          }
+          return subSubInput.reduce(reducer, subInitialValue);
         };
-    }
-    return input.reduce(reducer, initialValue);
+      }
+      return subInput.reduce(reducer, subInitialValue);
+    };
+  }
+  if (arguments.length === 2) {
+    return function subFunction(subInput) {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      return subInput.reduce(reducer, initialValue);
+    };
+  }
+  return input.reduce(reducer, initialValue);
 }
 
 /**
@@ -161,18 +203,18 @@ export function reduce(reducer, initialValue, input) {
  * @return {Number | Function}
  */
 export function add(a, b) {
-    if (arguments.length === 0) {
-        return add;
-    }
-    if (arguments.length === 1) {
-        return function subFunction(subB) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            return a + subB;
-        };
-    }
-    return a + b;
+  if (arguments.length === 0) {
+    return add;
+  }
+  if (arguments.length === 1) {
+    return function subFunction(subB) {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      return a + subB;
+    };
+  }
+  return a + b;
 }
 
 /**
@@ -189,18 +231,18 @@ export function add(a, b) {
  * @return {Number | Function}
  */
 export function subtract(a, b) {
-    if (arguments.length === 0) {
-        return subtract;
-    }
-    if (arguments.length === 1) {
-        return function subFunction(subB) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            return a - subB;
-        };
-    }
-    return a - b;
+  if (arguments.length === 0) {
+    return subtract;
+  }
+  if (arguments.length === 1) {
+    return function subFunction(subB) {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      return a - subB;
+    };
+  }
+  return a - b;
 }
 
 /**
@@ -218,18 +260,18 @@ export function subtract(a, b) {
  * @return {* | Function}
  */
 export function prop(obj, propName) {
-    if (arguments.length === 0) {
-        return prop;
-    }
-    if (arguments.length === 1) {
-        return function subFunction(subPropName) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            return obj[subPropName];
-        };
-    }
-    return obj[propName];
+  if (arguments.length === 0) {
+    return prop;
+  }
+  if (arguments.length === 1) {
+    return function subFunction(subPropName) {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      return obj[subPropName];
+    };
+  }
+  return obj[propName];
 }
 
 /**
@@ -254,16 +296,16 @@ export function prop(obj, propName) {
  * @return {*}
  */
 export function pipe(...functions) {
-    if (arguments.length === 0) {
-        return pipe;
+  if (arguments.length === 0) {
+    return pipe;
+  }
+  return function subFunction() {
+    let nextArguments = Array.from(arguments);
+    let result;
+    for (const func of functions) {
+      result = func(...nextArguments);
+      nextArguments = [result];
     }
-    return function subFunction() {
-        let nextArguments = Array.from(arguments);
-        let result;
-        for (const func of functions) {
-            result = func(...nextArguments);
-            nextArguments = [result];
-        }
-        return result;
-    };
+    return result;
+  };
 }
