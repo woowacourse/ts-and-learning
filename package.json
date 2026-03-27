@@ -1,10 +1,30 @@
 {
   "name": "ts-learning-tune-up",
+  "version": "1.0.0",
   "private": true,
+  "description": "- TypeScript 기초 문법을 익힌다.\r - 학습법 설계 → 시도 → 피드백 → … 루프를 반복하며, 학습법을 개선한다.",
+  "homepage": "https://github.com/janghw0126/ts-and-learning#readme",
+  "bugs": {
+    "url": "https://github.com/janghw0126/ts-and-learning/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janghw0126/ts-and-learning.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "exercise": "powershell -ExecutionPolicy Bypass -File run.ps1"
   },
   "devDependencies": {
-    "typescript": "^5"
-  }
+    "type-assertions": "^1.1.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@types/node": "^25.5.0"
+  },
+  "keywords": []
 }
