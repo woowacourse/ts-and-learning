@@ -44,18 +44,18 @@ Bonus:
  * @return {Array | Function}
  */
 export function map(mapper, input) {
-    if (arguments.length === 0) {
-        return map;
-    }
-    if (arguments.length === 1) {
-        return function subFunction(subInput) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            return subInput.map(mapper);
-        };
-    }
-    return input.map(mapper);
+  if (arguments.length === 0) {
+    return map;
+  }
+  if (arguments.length === 1) {
+    return function subFunction(subInput) {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      return subInput.map(mapper);
+    };
+  }
+  return input.map(mapper);
 }
 
 /**
@@ -75,18 +75,18 @@ export function map(mapper, input) {
  * @return {Array | Function}
  */
 export function filter(filterer, input) {
-    if (arguments.length === 0) {
-        return filter;
-    }
-    if (arguments.length === 1) {
-        return function subFunction(subInput) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            return subInput.filter(filterer);
-        };
-    }
-    return input.filter(filterer);
+  if (arguments.length === 0) {
+    return filter;
+  }
+  if (arguments.length === 1) {
+    return function subFunction(subInput) {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      return subInput.filter(filterer);
+    };
+  }
+  return input.filter(filterer);
 }
 
 /**
@@ -118,34 +118,34 @@ export function filter(filterer, input) {
  * @return {* | Function}
  */
 export function reduce(reducer, initialValue, input) {
-    if (arguments.length === 0) {
-        return reduce;
-    }
-    if (arguments.length === 1) {
-        return function subFunction(subInitialValue, subInput) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            if (arguments.length === 1) {
-                return function subSubFunction(subSubInput) {
-                    if (arguments.length === 0) {
-                        return subSubFunction;
-                    }
-                    return subSubInput.reduce(reducer, subInitialValue);
-                };
-            }
-            return subInput.reduce(reducer,subInitialValue);
-        }
-    }
-    if (arguments.length === 2) {
-        return function subFunction(subInput) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            return subInput.reduce(reducer, initialValue);
+  if (arguments.length === 0) {
+    return reduce;
+  }
+  if (arguments.length === 1) {
+    return function subFunction(subInitialValue, subInput) {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      if (arguments.length === 1) {
+        return function subSubFunction(subSubInput) {
+          if (arguments.length === 0) {
+            return subSubFunction;
+          }
+          return subSubInput.reduce(reducer, subInitialValue);
         };
-    }
-    return input.reduce(reducer, initialValue);
+      }
+      return subInput.reduce(reducer, subInitialValue);
+    };
+  }
+  if (arguments.length === 2) {
+    return function subFunction(subInput) {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      return subInput.reduce(reducer, initialValue);
+    };
+  }
+  return input.reduce(reducer, initialValue);
 }
 
 /**
@@ -161,18 +161,18 @@ export function reduce(reducer, initialValue, input) {
  * @return {Number | Function}
  */
 export function add(a, b) {
-    if (arguments.length === 0) {
-        return add;
-    }
-    if (arguments.length === 1) {
-        return function subFunction(subB) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            return a + subB;
-        };
-    }
-    return a + b;
+  if (arguments.length === 0) {
+    return add;
+  }
+  if (arguments.length === 1) {
+    return function subFunction(subB) {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      return a + subB;
+    };
+  }
+  return a + b;
 }
 
 /**
@@ -189,18 +189,18 @@ export function add(a, b) {
  * @return {Number | Function}
  */
 export function subtract(a, b) {
-    if (arguments.length === 0) {
-        return subtract;
-    }
-    if (arguments.length === 1) {
-        return function subFunction(subB) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            return a - subB;
-        };
-    }
-    return a - b;
+  if (arguments.length === 0) {
+    return subtract;
+  }
+  if (arguments.length === 1) {
+    return function subFunction(subB) {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      return a - subB;
+    };
+  }
+  return a - b;
 }
 
 /**
@@ -218,18 +218,18 @@ export function subtract(a, b) {
  * @return {* | Function}
  */
 export function prop(obj, propName) {
-    if (arguments.length === 0) {
-        return prop;
-    }
-    if (arguments.length === 1) {
-        return function subFunction(subPropName) {
-            if (arguments.length === 0) {
-                return subFunction;
-            }
-            return obj[subPropName];
-        };
-    }
-    return obj[propName];
+  if (arguments.length === 0) {
+    return prop;
+  }
+  if (arguments.length === 1) {
+    return function subFunction(subPropName) {
+      if (arguments.length === 0) {
+        return subFunction;
+      }
+      return obj[subPropName];
+    };
+  }
+  return obj[propName];
 }
 
 /**
@@ -254,16 +254,16 @@ export function prop(obj, propName) {
  * @return {*}
  */
 export function pipe(...functions) {
-    if (arguments.length === 0) {
-        return pipe;
+  if (arguments.length === 0) {
+    return pipe;
+  }
+  return function subFunction() {
+    let nextArguments = Array.from(arguments);
+    let result;
+    for (const func of functions) {
+      result = func(...nextArguments);
+      nextArguments = [result];
     }
-    return function subFunction() {
-        let nextArguments = Array.from(arguments);
-        let result;
-        for (const func of functions) {
-            result = func(...nextArguments);
-            nextArguments = [result];
-        }
-        return result;
-    };
+    return result;
+  };
 }
