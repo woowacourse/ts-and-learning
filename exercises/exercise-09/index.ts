@@ -19,11 +19,31 @@ Intro:
     quickly figured out that the amount of types needed to be
     created is too big.
 
-Exercise:
+
+    PowerUsers 아이디어는 좋지 않았습니다. 해당 사용자들이 확장된 권한(extended permissions)을 갖게 되자 다른 사용자들을 괴롭히기 시작했고, 
+    그 결과 많은 훌륭한 사용자들을 잃었습니다.
+    이에 대한 대응으로 남은 예산을 모두 마케팅에 쏟아부어 훨씬 더 많은 사용자를 유치했습니다.
+    이제 모든 것을 실제 database로 이전할 준비를 시작해야 합니다. 지금은 우선 mock을 사용해 구현하고 있습니다.
+
+    서버 API 형식은 다음과 같이 결정되었습니다:
+
+    성공 시: { status: 'success', data: RESPONSE_DATA }
+    에러 시: { status: 'error', error: ERROR_MESSAGE }
+
+    API 엔지니어가 이 API를 위한 type들을 생성하기 시작했는데, 
+    생성해야 할 type의 양이 너무 많다는 것을 곧 깨달았습니다.
+
+    Exercise:
 
     Remove UsersApiResponse and AdminsApiResponse types
     and use generic type ApiResponse in order to specify API
     response formats for each of the functions.
+
+    UsersApiResponse와 AdminsApiResponse type을 제거하고, 각 함수에 대한 API 응답 형식을 지정하기 위해 
+    generic type인 ApiResponse를 사용하세요.
+
+
+    
 
 */
 
@@ -53,52 +73,30 @@ const users: User[] = [
     { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' }
 ];
 
-export type ApiResponse<T> = unknown;
+export type ApiResponse<T> = { status: 'success'; data: T } | { status: 'error'; error: string };
 
-type AdminsApiResponse = (
-    {
-        status: 'success';
-        data: Admin[];
-    } |
-    {
-        status: 'error';
-        error: string;
-    }
-);
-
-export function requestAdmins(callback: (response: AdminsApiResponse) => void) {
+export function requestAdmins(callback: (response: ApiResponse<Admin[]>) => void) {
     callback({
         status: 'success',
         data: admins
     });
 }
 
-type UsersApiResponse = (
-    {
-        status: 'success';
-        data: User[];
-    } |
-    {
-        status: 'error';
-        error: string;
-    }
-);
-
-export function requestUsers(callback: (response: UsersApiResponse) => void) {
+export function requestUsers(callback: (response: ApiResponse<User[]>) => void) {
     callback({
         status: 'success',
         data: users
     });
 }
 
-export function requestCurrentServerTime(callback: (response: unknown) => void) {
+export function requestCurrentServerTime(callback: (response: ApiResponse<number>) => void) {
     callback({
         status: 'success',
         data: Date.now()
     });
 }
 
-export function requestCoffeeMachineQueueLength(callback: (response: unknown) => void) {
+export function requestCoffeeMachineQueueLength(callback: (response: ApiResponse<number>) => void) {
     callback({
         status: 'error',
         error: 'Numeric value has exceeded Number.MAX_SAFE_INTEGER.'
@@ -160,7 +158,7 @@ function startTheApp(callback: (error: Error | null) => void) {
 startTheApp((e: Error | null) => {
     console.log();
     if (e) {
-        console.log(`Error: "${e.message}", but it's fine, sometimes errors are inevitable.`)
+        console.log(`Error: "${e.message}", but it's fine, sometimes errors are inevitable.`);
     } else {
         console.log('Success!');
     }

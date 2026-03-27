@@ -13,6 +13,15 @@ Intro:
     in the community, it would be very funny and the project
     would definitely succeed!
 
+
+    프로젝트에서 filtering 기능이 완전히 제거되었습니다.
+    이 기능은 최종 사용자에게 전혀 필요하지 않은 것으로 밝혀졌으며, 
+    우리는 단지 오피스 매니저의 지시라는 이유로 많은 시간을 허비했습니다. 
+    다음번에는 대신 product management의 의견에 귀를 기울여야 합니다.
+
+    어쨌든 우리에게는 새로운 계획이 있습니다. 
+    CEO의 친구인 Nick이 커뮤니티에서 사용자 이름을 가끔 무작위로 바꾸면(swap) 매우 재미있을 것이고 프로젝트도 반드시 성공할 거라고 말해주었거든요!
+
 Exercise:
 
     Implement swap which receives 2 persons and returns them in
@@ -21,6 +30,11 @@ Exercise:
     Also this function shouldn't necessarily be limited to just
     Person types, lets type it so that it works with any two types
     specified.
+
+    두 명의 person을 받아 역순으로 반환하는 swap을 구현하세요. 
+    사실 함수 자체는 이미 작성되어 있습니다. 우리는 그저 적절한 type을 제공하기만 하면 됩니다.
+    또한 이 함수가 반드시 Person type에만 국한될 필요는 없으므로, 
+    지정된 어떤 두 가지 type(any two types specified)에 대해서도 작동하도록 type을 정의해 봅시다.
 
 */
 
@@ -78,7 +92,7 @@ const users: User[] = [
     }
 ];
 
-export function swap(v1, v2) {
+export function swap<T, U>(v1: T, v2: U): [U, T] {
     return [v2, v1];
 }
 

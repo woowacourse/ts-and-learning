@@ -76,26 +76,32 @@ Exercise:
 
 */
 
-export type User = unknown;
+// 핵심 : users 객체 내의 타입을 참고하여 User 타입 정의하고 반영하기.
 
-export const users: unknown[] = [
+export type User = {
+  name: string;
+  age: number;
+  occupation: string;
+};
+
+export const users: User[] = [
   {
-    name: "Max Mustermann",
+    name: 'Max Mustermann',
     age: 25,
-    occupation: "Chimney sweep",
+    occupation: 'Chimney sweep',
   },
   {
-    name: "Kate Müller",
+    name: 'Kate Müller',
     age: 23,
-    occupation: "Astronaut",
+    occupation: 'Astronaut',
   },
 ];
 
-export function logPerson(user: unknown) {
+export function logPerson(user: User) {
   console.log(` - ${user.name}, ${user.age}`);
 }
 
-console.log("Users:");
+console.log('Users:');
 users.forEach(logPerson);
 
 // In case you are stuck:

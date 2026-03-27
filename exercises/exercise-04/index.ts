@@ -8,10 +8,21 @@ Intro:
     into separate functions isUser and isAdmin -
     logPerson function got new type errors.
 
+    User와 Admin 모두에게 "type"을 도입함에 따라
+    이제 두 타입을 구분하기가 더 쉬워졌습니다.
+    객체의 type을 체크하는 로직을 별도의 함수인 
+    isUser와 isAdmin으로 추출하자마자 -
+    logPerson 함수에 새로운 type 에러가 발생했습니다.
+
+    
+
 Exercise:
 
     Figure out how to help TypeScript understand types in
     this situation and apply necessary fixes.
+
+    이 상황에서 TypeScript가 type을 제대로 이해할 수 있도록 
+    도울 방법을 찾아내고 필요한 수정을 적용하세요.
 
 */
 
@@ -38,11 +49,11 @@ export const persons: Person[] = [
     { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' }
 ];
 
-export function isAdmin(person: Person) {
+export function isAdmin(person: Person): person is Admin {
     return person.type === 'admin';
 }
 
-export function isUser(person: Person) {
+export function isUser(person: Person): person is User {
     return person.type === 'user';
 }
 

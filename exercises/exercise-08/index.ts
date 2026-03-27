@@ -8,12 +8,20 @@ Intro:
     called PowerUser which is supposed to combine
     everything User and Admin have.
 
+    프로젝트가 성장하면서 일부 사용자들이 더 많은 영향력을 갖게 되는 상황에 이르렀습니다.
+    따라서 우리는 User와 Admin이 가진 모든 요소를 결합한 PowerUser라는 
+    새로운 person type을 만들기로 결정했습니다.
+
 Exercise:
 
     Define type PowerUser which should have all fields
     from both User and Admin (except for type),
     and also have type 'powerUser' without duplicating
     all the fields in the code.
+
+    코드 내에서 모든 필드를 중복해서 작성하지 않고, (type 필드를 제외한)
+    User와 Admin의 모든 필드를 포함하며 type은 'powerUser'로 가지는
+    PowerUser type을 정의하세요.
 
 */
 
@@ -31,7 +39,7 @@ interface Admin {
     role: string;
 }
 
-type PowerUser = unknown;
+type PowerUser = Omit<User, 'type'> & Omit<Admin, 'type'> & { type: 'powerUser' };
 
 export type Person = User | Admin | PowerUser;
 
