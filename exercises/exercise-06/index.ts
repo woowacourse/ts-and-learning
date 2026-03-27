@@ -41,6 +41,7 @@ interface Admin {
     role: string;
 }
 
+
 export type Person = User | Admin;
 
 export const persons: Person[] = [
@@ -52,17 +53,24 @@ export const persons: Person[] = [
     { type: 'admin', name: 'Agent Smith', age: 23, role: 'Anti-virus engineer' }
 ];
 
+export function getObjectKeys<T extends object>(obj: T) {
+    return Object.keys(obj) as (keyof T)[];
+}
+
+
 export function logPerson(person: Person) {
     console.log(
         ` - ${person.name}, ${person.age}, ${person.type === 'admin' ? person.role : person.occupation}`
     );
 }
+export function filterPersons(persons: Person[], personType: 'user' , criteria: Partial<Omit<User,'type'>>): User[];
+export function filterPersons(persons: Person[], personType: 'admin' , criteria: Partial<Omit<Admin,'type'>>): Admin[];
 
-export function filterPersons(persons: Person[], personType: string, criteria: unknown): unknown[] {
+export function filterPersons(persons: Person[], personType: 'user' | 'admin', criteria: any): Person[] {
     return persons
         .filter((person) => person.type === personType)
         .filter((person) => {
-            let criteriaKeys = Object.keys(criteria) as (keyof Person)[];
+            let criteriaKeys = getObjectKeys(criteria) as (keyof Person)[];
             return criteriaKeys.every((fieldName) => {
                 return person[fieldName] === criteria[fieldName];
             });
