@@ -78,7 +78,7 @@ const users: User[] = [
     }
 ];
 
-export function swap(v1, v2) {
+export function swap<TypeA, TypeB>(v1: TypeA, v2: TypeB): [TypeB, TypeA] {
     return [v2, v1];
 }
 
