@@ -53,18 +53,19 @@ const users: User[] = [
     { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' }
 ];
 
-export type ApiResponse<T> = unknown;
+type ApiResponseSuccess<T = unknown> = {
+    status: 'success';
+    data: T;
+}
 
-type AdminsApiResponse = (
-    {
-        status: 'success';
-        data: Admin[];
-    } |
-    {
-        status: 'error';
-        error: string;
-    }
-);
+type ApiResponseError = {
+    status: 'error';
+    error: string;
+};
+
+export type ApiResponse<T = unknown> = ApiResponseSuccess<T> | ApiResponseError;
+
+type AdminsApiResponse = ApiResponse<Admin[]>;
 
 export function requestAdmins(callback: (response: AdminsApiResponse) => void) {
     callback({
@@ -73,16 +74,7 @@ export function requestAdmins(callback: (response: AdminsApiResponse) => void) {
     });
 }
 
-type UsersApiResponse = (
-    {
-        status: 'success';
-        data: User[];
-    } |
-    {
-        status: 'error';
-        error: string;
-    }
-);
+type UsersApiResponse = ApiResponse<User[]>;;
 
 export function requestUsers(callback: (response: UsersApiResponse) => void) {
     callback({
@@ -91,14 +83,14 @@ export function requestUsers(callback: (response: UsersApiResponse) => void) {
     });
 }
 
-export function requestCurrentServerTime(callback: (response: unknown) => void) {
+export function requestCurrentServerTime(callback: (response: ApiResponse<number>) => void) {
     callback({
         status: 'success',
         data: Date.now()
     });
 }
 
-export function requestCoffeeMachineQueueLength(callback: (response: unknown) => void) {
+export function requestCoffeeMachineQueueLength(callback: (response: ApiResponse) => void) {
     callback({
         status: 'error',
         error: 'Numeric value has exceeded Number.MAX_SAFE_INTEGER.'
