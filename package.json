@@ -2,9 +2,10 @@
   "name": "ts-learning-tune-up",
   "private": true,
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "typecheck:ex": "sh -c 'tsc --noEmit 2>&1 | grep \"exercise-$1\" || echo \"✅ 타입 에러 없음\"' --"
   },
   "devDependencies": {
-    "typescript": "^5"
+    "typescript": "4.9"
   }
 }

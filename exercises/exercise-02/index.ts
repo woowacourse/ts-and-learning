@@ -30,9 +30,9 @@ interface Admin {
   role: string;
 }
 
-export type Person = unknown;
+export type Person = User | Admin;
 
-export const persons: User[] /* <- Person[] */ = [
+export const persons: Person[] /* <- Person[] */ = [
   {
     name: "Max Mustermann",
     age: 25,
@@ -55,11 +55,14 @@ export const persons: User[] /* <- Person[] */ = [
   },
 ];
 
-export function logPerson(user: User) {
+export function logPerson(user: Person) {
+  if ("occupation" in user) {
+    console.log(`${user.occupation}`);
+    return;
+  }
   console.log(` - ${user.name}, ${user.age}`);
 }
 
 persons.forEach(logPerson);
-
 // In case you are stuck:
 // https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types
