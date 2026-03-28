@@ -24,6 +24,7 @@ interface User {
     occupation: string;
 }
 
+
 interface Admin {
     type: 'admin';
     name: string;
@@ -31,7 +32,9 @@ interface Admin {
     role: string;
 }
 
-type PowerUser = unknown;
+type PowerUser = {
+    type: 'powerUser';
+} & Omit<User, 'type'> & Omit<Admin, 'type'> & { type: 'powerUser' };
 
 export type Person = User | Admin | PowerUser;
 

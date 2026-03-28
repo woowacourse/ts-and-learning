@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run ex *)",
+      "Bash(npm run typecheck)",
+      "Read",
+      "Write(learnings/*)",
+      "Edit(exercises/*)",
+      "Edit(context/*)"
+    ]
+  }
+}
