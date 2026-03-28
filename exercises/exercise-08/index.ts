@@ -31,7 +31,7 @@ interface Admin {
     role: string;
 }
 
-type PowerUser = unknown;
+type PowerUser = Omit<User, 'type'> & Omit<Admin, 'type'> & { type: 'powerUser' };
 
 export type Person = User | Admin | PowerUser;
 
@@ -45,8 +45,8 @@ export const persons: Person[] = [
         name: 'Nikki Stone',
         age: 45,
         role: 'Moderator',
-        occupation: 'Cat groomer'
-    }
+        occupation: 'Cat groomer',
+    },
 ];
 
 function isAdmin(person: Person): person is Admin {

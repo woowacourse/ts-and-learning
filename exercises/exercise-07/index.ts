@@ -53,14 +53,14 @@ const admins: Admin[] = [
         type: 'admin',
         name: 'Will Bruces',
         age: 30,
-        role: 'Overseer'
+        role: 'Overseer',
     },
     {
         type: 'admin',
         name: 'Steve',
         age: 40,
-        role: 'Steve'
-    }
+        role: 'Steve',
+    },
 ];
 
 const users: User[] = [
@@ -68,17 +68,17 @@ const users: User[] = [
         type: 'user',
         name: 'Moses',
         age: 70,
-        occupation: 'Desert guide'
+        occupation: 'Desert guide',
     },
     {
         type: 'user',
         name: 'Superman',
         age: 28,
-        occupation: 'Ordinary person'
-    }
+        occupation: 'Ordinary person',
+    },
 ];
 
-export function swap(v1, v2) {
+export function swap<T, U>(v1: T, v2: U): [U, T] {
     return [v2, v1];
 }
 

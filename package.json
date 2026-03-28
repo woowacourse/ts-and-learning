@@ -1,10 +1,10 @@
 {
-  "name": "ts-learning-tune-up",
-  "private": true,
-  "scripts": {
-    "typecheck": "tsc --noEmit"
-  },
-  "devDependencies": {
-    "typescript": "^5"
-  }
+    "name": "ts-learning-tune-up",
+    "private": true,
+    "scripts": {
+        "typecheck": "tsc --noEmit"
+    },
+    "devDependencies": {
+        "typescript": "5.4.5"
+    }
 }

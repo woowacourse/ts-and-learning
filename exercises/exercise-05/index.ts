@@ -37,38 +37,41 @@ interface Admin {
 
 export type Person = User | Admin;
 
+type UserWithoutType = Omit<User, 'type'>;
+type UserCriteria = Partial<UserWithoutType>;
+
 export const persons: Person[] = [
     { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
     {
         type: 'admin',
         name: 'Jane Doe',
         age: 32,
-        role: 'Administrator'
+        role: 'Administrator',
     },
     {
         type: 'user',
         name: 'Kate Müller',
         age: 23,
-        occupation: 'Astronaut'
+        occupation: 'Astronaut',
     },
     {
         type: 'admin',
         name: 'Bruce Willis',
         age: 64,
-        role: 'World saver'
+        role: 'World saver',
     },
     {
         type: 'user',
         name: 'Wilson',
         age: 23,
-        occupation: 'Ball'
+        occupation: 'Ball',
     },
     {
         type: 'admin',
         name: 'Agent Smith',
         age: 23,
-        role: 'Administrator'
-    }
+        role: 'Administrator',
+    },
 ];
 
 export const isAdmin = (person: Person): person is Admin => person.type === 'admin';
@@ -85,9 +88,10 @@ export function logPerson(person: Person) {
     console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
 }
 
-export function filterUsers(persons: Person[], criteria: User): User[] {
+export function filterUsers(persons: Person[], criteria: Partial<UserCriteria>): User[] {
     return persons.filter(isUser).filter((user) => {
-        const criteriaKeys = Object.keys(criteria) as (keyof User)[];
+        // Admin 제외 User만 필터링
+        const criteriaKeys = Object.keys(criteria) as (keyof UserCriteria)[];
         return criteriaKeys.every((fieldName) => {
             return user[fieldName] === criteria[fieldName];
         });
@@ -96,12 +100,9 @@ export function filterUsers(persons: Person[], criteria: User): User[] {
 
 console.log('Users of age 23:');
 
-filterUsers(
-    persons,
-    {
-        age: 23
-    }
-).forEach(logPerson);
+filterUsers(persons, {
+    age: 23,
+}).forEach(logPerson);
 
 // In case you are stuck:
 // https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype
